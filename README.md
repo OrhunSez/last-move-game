@@ -1,7 +1,7 @@
 # Last Move Game Simulation
 
 **Course:** Algorithms and Programming — Project 2  
-**Students:** Orhun Sezgin, (Partner Student Number: 05220000334)  
+**Students:** Orhun Sezgin 
 **Contact:** orhunsez@gmail.com
 
 ---
@@ -86,7 +86,7 @@ Enter player letters when prompted, choose a board size (3, 5, or 7), and play. 
 |---|---|
 | `deneme1.py` | First prototype — core functions working, single-player win check, no input validation |
 | `deneme2.py` | Second iteration — win check refactored for both players, lose state tracking added |
-| `05230000296_05220000334.py` | **Submitted final file** |
+| `05230000296.py` | **Submitted final file** |
 
 These were the iterations created before using git version control. They were merged into the single tracked file `last_move.py`.
 
