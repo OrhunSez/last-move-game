@@ -1,6 +1,4 @@
 
-
-
 def empty_generator(board_size):
     board = []
     for i in range(board_size):
@@ -174,68 +172,76 @@ def put_stone(board, player):
 
     return board
 
-def wincheck(board, player):
+def wincheck(board, player1, player2):
     global checklist
     checklist = []
-    x = player["position"][0]
-    y = player["position"][1]
-    yeswin = True
 
-    if x>0 and y >0:
-        for i in range(-1,2):
-            for j in range(-1,2):
-                try:
-                    checklist.append(board[x+i][y+j])
-                    if board[x+i][y+j] == " ":
-                        yeswin = False # there is no winning state if an empty block exists around the player
-                        print("nowin")
-                        break
-                except IndexError:
-                    continue
-        if yeswin:
-            print(f"Player {player['name']} loses!")
+    players = [player1,player2]
 
-    elif x==0 and y >0:
-        for i in range(2):
-            for j in range(-1,2):
-                try:
-                    checklist.append(board[x+i][y+j])
-                    if board[x+i][y+j] == " ":
-                        yeswin = False 
-                        print("nowin")
-                        break
-                except IndexError:
-                    continue
-        if yeswin:
-            print(f"Player {player['name']} loses!")
-    
-    elif x>0 and y==0:
-        for i in range(-1,2):
-            for j in range(2):
-                try:
-                    checklist.append(board[x+i][y+j])
-                    if board[x+i][y+j] == " ":
-                        yeswin = False 
-                        print("nowin")
-                        break
-                except IndexError:
-                    continue
-        if yeswin:
-            print(f"Player {player['name']} loses!")
+    for player in players:
+        x = player["position"][0]
+        y = player["position"][1]
+        yeswin = True
 
-    else:
-        for i in range(2):
-            for j in range(2):
-                try:
-                    checklist.append(board[x+i][y+j])
-                    if board[x+i][y+j] == " ":
-                        yeswin = False 
-                        print("nowin")
-                        break
-                except IndexError:
-                    continue
+        if x>0 and y >0:
+            for i in range(-1,2):
+                for j in range(-1,2):
+                    try:
+                        checklist.append(board[x+i][y+j])
+                        if board[x+i][y+j] == " ":
+                            yeswin = False # there is no winning state if an empty block exists around the player
+                            print("nowin")
+                            break
+                    except IndexError:
+                        continue
+
+        elif x==0 and y >0:
+            for i in range(2):
+                for j in range(-1,2):
+                    try:
+                        checklist.append(board[x+i][y+j])
+                        if board[x+i][y+j] == " ":
+                            yeswin = False 
+                            print("nowin")
+                            break
+                    except IndexError:
+                        continue
+        
+        elif x>0 and y==0:
+            for i in range(-1,2):
+                for j in range(2):
+                    try:
+                        checklist.append(board[x+i][y+j])
+                        if board[x+i][y+j] == " ":
+                            yeswin = False 
+                            print("nowin")
+                            break
+                    except IndexError:
+                        continue
+
+        else:
+            for i in range(2):
+                for j in range(2):
+                    try:
+                        checklist.append(board[x+i][y+j])
+                        if board[x+i][y+j] == " ":
+                            yeswin = False 
+                            print("nowin")
+                            break
+                    except IndexError:
+                        continue
+
         if yeswin:
-            print(f"Player {player['name']} loses!")
+            player["lose"] = True
+
+    if player1["lose"] == True and player2["lose"] == False:
+        print(f"Player {player2['name']} wins!")
+
+    if player1["lose"] == False and player2["lose"] == True:
+        print(f"Player {player1['name']} wins!")
+
+    if player1["lose"] == True and player2["lose"] == True:
+        print("Both players lose/win!")
 
     return yeswin
 
@@ -245,8 +251,8 @@ def main():
     again = "Y"
 
     while again in "Yy":
-        player1 = { "name" : "", "position" : []}
-        player2 = { "name" : "", "position" : []}   
+        player1 = { "name" : "", "position" : [], "lose" : False}
+        player2 = { "name" : "", "position" : [], "lose" : False}   
         player1name = input("Enter a capital letter to represent player 1 (except O): ").upper()
         player2name = input("Enter a capital letter to represent player 2 (except O): ").upper()
         player1["name"] = player1name
@@ -260,16 +266,14 @@ def main():
             show_board(game_board)
             game_board = put_stone(game_board, player1)
             show_board(game_board)
-            yeswin = wincheck(game_board, player1)
-            yeswin = wincheck(game_board, player2)
+            yeswin = wincheck(game_board, player1, player2)
             if yeswin:
                 break
             game_board, player1, player2 = move_player(game_board, player2["name"], player1, player2)
             show_board(game_board)
             game_board = put_stone(game_board, player2)
             show_board(game_board)
-            yeswin = wincheck(game_board, player1)
-            yeswin = wincheck(game_board, player2)
+            yeswin = wincheck(game_board, player1, player2)
             if yeswin:
                 break
 
